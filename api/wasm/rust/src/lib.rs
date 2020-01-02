@@ -8,7 +8,7 @@ impl Logger {
         log::set_logger(&LOGGER).map(|()| log::set_max_level(log::LevelFilter::Trace))
     }
 
-    fn proxywasm_loglevel(level: log::Level) -> i32 {
+    fn proxywasm_loglevel(level: log::Level) -> u32 {
         match level {
             log::Level::Trace => 0,
             log::Level::Debug => 1,
@@ -132,7 +132,7 @@ impl From<WasmResult> for i32 {
 /// Low-level Proxy-WASM APIs for the host functions.
 pub mod host {
     extern "C" {
-        pub fn proxy_log(level: i32, message_data: *const u8, message_size: usize) -> i32;
+        pub fn proxy_log(level: u32, message_data: *const u8, message_size: usize) -> u32;
         pub fn proxy_get_header_map_pairs(p0: i32, p1:  i32, p2: i32) -> i32;
         pub fn proxy_get_property(p0: i32, p1: i32, p2: i32, p3: i32) -> i32;
         pub fn proxy_get_buffer_bytes(p0: i32, p1: i32, p2: i32, p3: i32, p4: i32) -> i32;
