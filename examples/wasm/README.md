@@ -42,7 +42,7 @@ example body
 ## Build WASM Module
 
 Now you want to make changes to the C++ filter ([envoy_filter_http_wasm_example.cc](envoy_filter_http_wasm_example.cc))
-and regenerate to WASM module ([envoy_filter_http_wasm_example.wasm](envoy_filter_http_wasm_example.wasm)).
+and regenerate to WASM module ([rust_wasm.wasm](rust_wasm.wasm)).
 
 ### Build using Docker image with WASM toolchain
 

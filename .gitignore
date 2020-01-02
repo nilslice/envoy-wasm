@@ -30,4 +30,6 @@ TAGS
 .vscode
 clang.bazelrc
 user.bazelrc
-**/Cargo.lock
+**/rust-wasm/target
+**/rust/target
+

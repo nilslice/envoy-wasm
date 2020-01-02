@@ -1,0 +1,15 @@
+[package]
+name = "rust-wasm"
+version = "0.1.0"
+authors = ["Steve Manuel <smanuel@recurly.com>"]
+edition = "2018"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+log = "0.4.8"
+proxy_wasm = { path = "../../../api/wasm/rust" }
+
+[lib]
+path = "src/lib.rs"
+crate-type = ["cdylib"]

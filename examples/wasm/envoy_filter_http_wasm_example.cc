@@ -53,7 +53,7 @@ FilterHeadersStatus ExampleContext::onResponseHeaders(uint32_t) {
   for (auto& p : pairs) {
     LOG_INFO(std::string(p.first) + std::string(" -> ") + std::string(p.second));
   }
-  addResponseHeader("newheader", "newheadervalue");
+  addResponseHeader("newheader", "newheadervalue-demo");
   replaceResponseHeader("location", "envoy-wasm");
   return FilterHeadersStatus::Continue;
 }

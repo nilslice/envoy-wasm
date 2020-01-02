@@ -1,3 +1,3 @@
-all: envoy_filter_http_wasm_example.wasm
+all: rust_wasm.wasm
 
 include ../../api/wasm/cpp/Makefile.base_lite

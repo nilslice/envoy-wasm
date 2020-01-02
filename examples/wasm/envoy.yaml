@@ -30,10 +30,22 @@ static_resources:
                 root_id: "my_root_id"
                 vm_config:
                   vm_id: "my_vm_id"
-                  runtime: "envoy.wasm.runtime.wavm"
+                  runtime: "envoy.wasm.runtime.v8"
                   code:
                     local:
                       filename: "/etc/envoy_filter_http_wasm_example.wasm"
+                  allow_precompiled: true
+          - name: envoy.filters.http.wasm
+            config:
+              config:
+                name: "my_rust_plugin"
+                root_id: "my_rust_root_id"
+                vm_config:
+                  vm_id: "my_rust_vm_id"
+                  runtime: "envoy.wasm.runtime.v8"
+                  code:
+                    local:
+                      filename: "/etc/rust_wasm.wasm"
                   allow_precompiled: true
           - name: envoy.router
             config: {}
