@@ -66,5 +66,11 @@ fn free(ptr: *mut u8) {
 pub mod host {
     extern "C" {
         pub fn proxy_log(level: u32, message_data: *const u8, message_size: usize) -> u32;
+        // TODO: translate raw i32 values into Rust types
+        pub fn proxy_get_header_map_pairs(p0: i32, p1:  i32, p2: i32) -> i32;
+        pub fn proxy_get_property(p0: i32, p1: i32, p2: i32, p3: i32) -> i32;
+        pub fn proxy_get_buffer_bytes(p0: i32, p1: i32, p2: i32, p3: i32, p4: i32) -> i32;
+        pub fn proxy_replace_header_map_value(p0: i32, p1: i32, p2: i32, p3: i32, p4: i32) -> i32;
+        pub fn proxy_add_header_map_value(p0: i32, p1: i32, p2: i32, p3: i32, p4: i32) -> i32;
     }
 }
