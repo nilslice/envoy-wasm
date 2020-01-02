@@ -1,2 +1,2 @@
-FROM envoy-wasm:latest
+FROM nilslice/envoy-wasm:latest
 CMD /usr/local/bin/envoy -c /etc/envoy.yaml -l debug --service-cluster proxy 
