@@ -23,18 +23,18 @@ static_resources:
                 route:
                   cluster: web_service
           http_filters:
-          - name: envoy.filters.http.wasm
-            config:
-              config:
-                name: "my_plugin"
-                root_id: "my_root_id"
-                vm_config:
-                  vm_id: "my_vm_id"
-                  runtime: "envoy.wasm.runtime.v8"
-                  code:
-                    local:
-                      filename: "/etc/envoy_filter_http_wasm_example.wasm"
-                  allow_precompiled: true
+          # - name: envoy.filters.http.wasm
+          #   config:
+          #     config:
+          #       name: "my_plugin"
+          #       root_id: "my_root_id"
+          #       vm_config:
+          #         vm_id: "my_vm_id"
+          #         runtime: "envoy.wasm.runtime.v8"
+          #         code:
+          #           local:
+          #             filename: "/etc/envoy_filter_http_wasm_example.wasm"
+          #         allow_precompiled: true
           - name: envoy.filters.http.wasm
             config:
               config:

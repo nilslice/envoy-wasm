@@ -9,6 +9,7 @@ edition = "2018"
 [dependencies]
 log = "0.4.8"
 proxy_wasm = { path = "../../../api/wasm/rust" }
+chrono = "0.4.10"
 
 [lib]
 path = "src/lib.rs"

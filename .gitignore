@@ -32,4 +32,4 @@ clang.bazelrc
 user.bazelrc
 **/rust-wasm/target
 **/rust/target
-
+target
