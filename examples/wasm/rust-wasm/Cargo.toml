@@ -12,5 +12,5 @@ proxy_wasm = { path = "../../../api/wasm/rust" }
 chrono = "0.4.10"
 
 [lib]
-path = "src/lib.rs"
+path = "src/filter.rs"
 crate-type = ["cdylib"]
