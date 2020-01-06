@@ -1,6 +1,8 @@
-mod logger;
 mod enums;
-mod filter;
+mod logger;
+
+pub mod filter;
+pub mod sdk;
 
 pub use crate::enums::*;
 
@@ -24,7 +26,7 @@ pub mod host {
             map_type: HeaderMapType,
             key_ptr: *const u8,
             key_size: usize,
-            value_ptr: *mut u8,
+            value_ptr: *mut *mut u8,
             value_size: &mut usize,
         ) -> WasmResult;
 
@@ -48,13 +50,13 @@ pub mod host {
 
         pub fn proxy_get_buffer_bytes(p0: i32, p1: i32, p2: i32, p3: i32, p4: i32) -> i32;
 
-        // TODO: complete this set of fn defs based on intrisics and externs found in ../../cpp/
+    // TODO: complete this set of fn defs based on intrisics and externs found in ../../cpp/
     }
 }
 
 /// Always hook into host's logging system.
 #[no_mangle]
-fn _start() {
+pub fn _start() {
     logger::Logger::init().unwrap();
 }
 

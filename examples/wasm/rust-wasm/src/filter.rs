@@ -1,4 +1,5 @@
 use proxy_wasm::{FilterHeadersStatus, host, HeaderMapType, WasmResult};
+use proxy_wasm::sdk::{self, log};
 
 #[no_mangle]
 fn proxy_on_response_headers(context_id: u32, headers_ptr: u8) -> FilterHeadersStatus {
@@ -8,19 +9,13 @@ fn proxy_on_response_headers(context_id: u32, headers_ptr: u8) -> FilterHeadersS
         headers_ptr
     );
 
-    let header_name ="x-new-rust-header";
-    let header_value ="rust-value";
-    unsafe {
-        host::proxy_add_header_map_value(
-            HeaderMapType::ResponseHeaders,
-            header_name.as_ptr(),
-            header_name.chars().count(),
-            header_value.as_ptr(),
-            header_value.chars().count()
-        );
-    };
-
-    FilterHeadersStatus::Continue
+    match sdk::add_header(HeaderMapType::RequestHeaders, "x-new-rust-header", "rust-value") {
+        Ok(()) => FilterHeadersStatus::Continue,
+        Err(e) => {
+            log::error!("failed to add header, wasm result: {:?}", e);
+            FilterHeadersStatus::Continue
+        }
+    }
 }
 
 #[no_mangle]
@@ -32,16 +27,9 @@ fn proxy_on_create(p0: u32, p1: u32) {
     );
 
     // N.B. 'test-header' must be sent in the inbound request in order for this example to work.
-    let replace_name = "test-header";
-    let replace_value = "test-value";
-    unsafe {
-        host::proxy_replace_header_map_value(
-            HeaderMapType::RequestHeaders,
-            replace_name.as_ptr(),
-            replace_name.chars().count(),
-            replace_value.as_ptr(),
-            replace_value.chars().count()
-        );
+    // In the proxy logs, you'll see the 'test-header' value has changed to 'test-value'.
+    if let Err(e) = sdk::replace_header(HeaderMapType::RequestHeaders, "test-header", "test-value") {
+            log::error!("failed to add header, wasm result: {:?}", e);
     };
 }
 
@@ -52,14 +40,11 @@ fn proxy_on_configure(p0: u32, p1: u32) -> u32 {
         p0,
         p1
     );
-    unsafe {
-        let mut nanos = 0u64;
-        let _result = host::proxy_get_current_time_nanoseconds(&mut nanos);
-
-        use chrono::TimeZone;
-        let time = chrono::Utc.timestamp_nanos(nanos as i64);
-        log::debug!("rust timestamp: {}", time);
-    }
+    
+    use chrono::TimeZone;
+    log::debug!(
+        "rust: time_now_utc() -> {:?}", 
+        chrono::Utc.timestamp_nanos(sdk::time_now_nanos() as i64));
     1
 }
 
@@ -68,7 +53,7 @@ fn proxy_on_request_headers(context_id: u32, headers_ptr: *const u8) -> FilterHe
     unsafe { host::proxy_set_effective_context(context_id) };
 
     // TODO: fix this example. currently, no header value is found in the value_ptr.
-    let value_ptr: *mut u8 = std::ptr::null_mut();
+    let value_ptr: *mut *mut u8 = std::ptr::null_mut();
     let value_size: &mut usize = &mut 0;
     let header_name = ":method";
     let res = unsafe {
@@ -86,7 +71,7 @@ fn proxy_on_request_headers(context_id: u32, headers_ptr: *const u8) -> FilterHe
         "rust: `proxy_on_request_headers` called, params: context_id={:?} headers_ptr={:?} header={:?}",
         context_id,
         headers_ptr,    
-        unsafe { String::from_utf8_lossy(std::slice::from_raw_parts(value_ptr, *value_size)) },
+        unsafe { String::from_utf8_lossy(std::slice::from_raw_parts(*value_ptr, *value_size)) },
     );
     
     FilterHeadersStatus::Continue

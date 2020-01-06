@@ -4,6 +4,7 @@ use crate::enums::*;
 // for SDK users to choose and implement these callback-style fn's. SDK would be higher level than
 // this.
 pub trait ProxyFilter {
+    fn register_filter(self);
     fn proxy_on_queue_ready(p0: u32, p1: u32);
     fn proxy_on_grpc_close(p0: u32, p1: u32, p2: u32);
     fn proxy_on_grpc_receive(p0: u32, p1: u32, p2: u32);
@@ -31,6 +32,6 @@ pub trait ProxyFilter {
     fn proxy_on_tick(p0: u32);
     fn proxy_on_configure(p0: u32, p1: u32) -> u32;
     fn proxy_on_start(p0: u32, p1: u32) -> u32;
-    // TODO: complete this list using defs from header files in ../../cpp/ 
-    // TODO: convert remaining u32 to rust types logically mapped to c++ defs   
+    // TODO: complete this list using defs from header files in ../../cpp/
+    // TODO: convert remaining u32 to rust types logically mapped to c++ defs
 }
